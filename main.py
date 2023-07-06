@@ -17,7 +17,7 @@ cap = cv2.VideoCapture("videos/vid.mp4")
 
 tracker = Sort(max_age=15, min_hits=3, iou_threshold=0.3)           #Tracking the objects through multiple frames
 
-#Limits for the line
+#Limits for the lines
 limits1=[5,300,1275,300]
 limits2=[5,350,1275,350]
 # limits3=[5,355,1275,355]
