@@ -7,7 +7,7 @@ from sort import *
 
 className=["White Spot"]
 
-model = torch.hub.load("ultralytics/yolov5", "custom", "best.pt")
+model = torch.hub.load("ultralytics/yolov5", "custom", "best4.pt")
 cap = cv2.VideoCapture("videos/vid.mp4")
 
 tracker = Sort(max_age=15, min_hits=3, iou_threshold=0.3)           #Tracking the objects through multiple frames
@@ -28,6 +28,10 @@ while True:
 
     resultsTracker = tracker.update(detections)
 
+    line1 = cv2.line(img, (limits1[0], limits1[1]), (limits1[2], limits1[3]), (0, 0, 255), 1)
+    line2 = cv2.line(img, (limits2[0], limits2[1]), (limits2[2], limits2[3]), (0, 0, 255), 1)
+    cvzone.putTextRect(img, f"Count : {finalCount}", (50, 50))
+
     for result in resultsTracker.tolist():
         x1,y1,x2,y2,id=int(result[0]),int(result[1]),int(result[2]),int(result[3]),int(result[4])
         w, h = x2 - x1, y2 - y1
@@ -38,8 +42,6 @@ while True:
 
         cvzone.cornerRect(img, (x1, y1, w, h), l=1, rt=1, colorR=(0, 0, 0))
 
-        line1 = cv2.line(img, (limits1[0], limits1[1]), (limits1[2], limits1[3]), (0, 0, 255), 1)
-        line2 = cv2.line(img, (limits2[0], limits2[1]), (limits2[2], limits2[3]), (0, 0, 255), 1)
         # line3 = cv2.line(img, (limits3[0], limits3[1]), (limits3[2], limits3[3]), (0, 0, 255), 1)
 
         cx, cy = x1 + w // 2, y1 + h // 2
@@ -56,7 +58,6 @@ while True:
                 line2 = cv2.line(img, (limits2[0], limits2[1]), (limits2[2], limits2[3]), (0, 255, 0), 3)
 
         finalCount=len(counts)
-        cvzone.putTextRect(img, f"Count : {finalCount}", (50, 50))
 
     cv2.imshow("Image",img)
 
@@ -66,3 +67,5 @@ while True:
 
 print(finalCount)
 cap.release()
+
+
